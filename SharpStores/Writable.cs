@@ -27,7 +27,7 @@ public class Writable<T>
     ///     Subscribes to store value changes
     /// </summary>
     /// <param name="callback">The callback to be invoked upon a value change</param>
-    /// <returns>An unsubscribing action</returns>
+    /// <returns>An action to be invoked by the caller upon unsubscribing</returns>
     public Action Subscribe(Action<T> callback)
     {
         _subscribers.Add(callback);
