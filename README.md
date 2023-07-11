@@ -1,2 +1,2 @@
-# SharpStores
-svelte/stores, but in .NET
+# 🔥 SharpStores
+Svelte's reactive stores in .NET
