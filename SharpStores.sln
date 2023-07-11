@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpStores", "SharpStores\SharpStores.csproj", "{C488B53B-2571-4BF1-B80C-859196B41F54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpStores.Demo.WinForms", "SharpStores.Demo.WinForms\SharpStores.Demo.WinForms.csproj", "{ACBFD054-EEA5-47C4-A32F-0BF2FD673454}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C488B53B-2571-4BF1-B80C-859196B41F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C488B53B-2571-4BF1-B80C-859196B41F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C488B53B-2571-4BF1-B80C-859196B41F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C488B53B-2571-4BF1-B80C-859196B41F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACBFD054-EEA5-47C4-A32F-0BF2FD673454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBFD054-EEA5-47C4-A32F-0BF2FD673454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBFD054-EEA5-47C4-A32F-0BF2FD673454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBFD054-EEA5-47C4-A32F-0BF2FD673454}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
