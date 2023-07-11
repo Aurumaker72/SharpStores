@@ -56,7 +56,7 @@ namespace SharpStores.Demo.WPF
             Time.Subscribe(value =>
             {
                 Title = value.ToString();
-            });
+            }); 
 
         }
 

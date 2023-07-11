@@ -4,10 +4,10 @@
 ///     A writable store for reactive data storage and manipulation
 /// </summary>
 /// <typeparam name="T">The stored content's type</typeparam>
-public class Writable<T>
+public class Writable<T> : ISubscribe<T>, ISet<T>
 {
     private T _value;
-    private readonly List<Action<T>> _subscribers = new();
+    private readonly List<ValueChanged<T>> _subscribers = new();
 
     /// <summary>
     ///     Constructs a <see cref="Writable{T}" /> with a default value
@@ -18,22 +18,11 @@ public class Writable<T>
         _value = value;
     }
 
-    private void Notify()
+    private void OnValueChanged()
     {
         _subscribers.ForEach(x => x(_value));
     }
-
-    /// <summary>
-    ///     Subscribes to store value changes
-    /// </summary>
-    /// <param name="callback">The callback to be invoked upon a value change</param>
-    /// <returns>An action to be invoked by the caller upon unsubscribing</returns>
-    public Action Subscribe(Action<T> callback)
-    {
-        _subscribers.Add(callback);
-        Notify();
-        return () => { _subscribers.Remove(callback); };
-    }
+    
 
     /// <summary>
     ///     Updates the store's value and notifies subscribers
@@ -42,16 +31,20 @@ public class Writable<T>
     public void Update(Func<T, T> callback)
     {
         _value = callback(_value);
-        Notify();
+        OnValueChanged();
     }
-
-
-    /// <summary>
-    ///     Sets the store's value to <paramref name="value" /> and notifies subscribers
-    /// </summary>
-    /// <param name="value"></param>
+    
+    /// <inheritdoc/>
     public void Set(T value)
     {
         Update(_ => value);
+    }
+
+    /// <inheritdoc/>
+    public Unsubscribe Subscribe(ValueChanged<T> callback)
+    {
+        _subscribers.Add(callback);
+        OnValueChanged();
+        return () => { _subscribers.Remove(callback); };
     }
 }

@@ -1,10 +1,15 @@
 namespace SharpStores;
 
-public class Readable<T>
+/// <summary>
+/// The <see cref="Delegate"/> to be invoked when a store has no subscribers left
+/// </summary>
+public delegate void Stop();
+
+public class Readable<T> : ISubscribe<T>
 {
-    private readonly Func<Action<T>, Action> _start;
-    private readonly Action? _stop = null;
-    private readonly List<Action<T>> _subscribers = new();
+    private readonly Func<Set<T>, Stop> _start;
+    private readonly Stop? _stop = null;
+    private readonly List<ValueChanged<T>> _subscribers = new();
     private T _value;
     
     /// <summary>
@@ -12,26 +17,18 @@ public class Readable<T>
     /// </summary>
     /// <param name="value">The initial value</param>
     /// <param name="start">
-    ///     The <see cref="Func{T,TResult}" /> to be invoked when the store gets its first subscriber.
-    ///     <para />
-    ///     The function accepts a
-    ///     <c>
-    ///         Set(
-    ///         <typeparam name="T"></typeparam>
-    ///         )
-    ///     </c>
-    ///     function to be invoked for setting the store's value
-    ///     <para />
-    ///     The function is expected to return a <c>Stop</c> function, which is invoked when the store loses its last
+    ///     The <see cref="Func{T,TResult}"/> to be invoked when the store gets its first subscriber.
+    ///     The function accepts a <see cref="Set{T}"/> delegate to be invoked for setting the store's value
+    ///     The function is expected to return a <see cref="Stop"/> delegate, which is invoked when the store loses its last
     ///     subscriber.
     /// </param>
-    public Readable(T value, Func<Action<T>, Action> start)
+    public Readable(T value, Func<Set<T>, Stop> start)
     {
         _value = value;
         _start = start;
     }
 
-    private void Notify()
+    private void OnValueChanged()
     {
         _subscribers.ForEach(x => x(_value));
     }
@@ -39,15 +36,11 @@ public class Readable<T>
     private void Update(Func<T, T> callback)
     {
         _value = callback(_value);
-        Notify();
+        OnValueChanged();
     }
 
-    /// <summary>
-    ///     Subscribes to store value changes
-    /// </summary>
-    /// <param name="callback">The callback to be invoked upon a value change</param>
-    /// <returns>An action to be invoked by the caller upon unsubscribing</returns>
-    public Action Subscribe(Action<T> callback)
+    /// <inheritdoc/>
+    public Unsubscribe Subscribe(ValueChanged<T> callback)
     {
         var previousCount = _subscribers.Count;
         _subscribers.Add(callback);
@@ -64,7 +57,7 @@ public class Readable<T>
                 break;
         }
 
-        Notify();
+        OnValueChanged();
 
         return () => { _subscribers.Remove(callback); };
     }
